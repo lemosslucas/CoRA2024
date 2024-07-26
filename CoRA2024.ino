@@ -2,17 +2,18 @@
 
 // define os sensores
 // SENSOR_0 == ESQUERDA :: SENSOR_4 == DIREITA
-const int SENSOR_0 = 3;
-const int SENSOR_1 = 4;
-const int SENSOR_2 = 5;
-const int SENSOR_3 = 6;
-const int SENSOR_4 = 7;
+const int SENSOR_0 = 14;
+const int SENSOR_1 = 15;
+const int SENSOR_2 = 16;
+const int SENSOR_3 = 17;
+const int SENSOR_4 = 18;
 
 // variaveis para ler a saida do sensor
-int SENSOR[4];
+int SENSOR[5];
 
 #define BRANCO 0 
 #define PRETO 1
+#define TEMPO_CURVA 200
 
 int velocidadeBaseDireita = 255;
 int velocidadeBaseEsquerda = 255;
@@ -32,20 +33,21 @@ void setup() {
 }
 
 void loop() {
-  SENSOR[0] = digitalRead(SENSOR_0);
-  SENSOR[1] = digitalRead(SENSOR_1);
-  SENSOR[2] = digitalRead(SENSOR_2);
-  SENSOR[3] = digitalRead(SENSOR_3);
-  SENSOR[4] = digitalRead(SENSOR_4);
-
   if (SENSOR[0] == BRANCO && SENSOR[1] == PRETO && SENSOR[2] == BRANCO && SENSOR[3] == PRETO && SENSOR[4] == PRETO) {
-    curva_esquerda();
-  } else if (SENSOR[0] == PRETO && SENSOR[1] == PRETO && SENSOR[2] == BRANCO && SENSOR[3] == PRETO &&SENSOR[4] == BRANCO) {
-    curva_direita();
+    curva_esquerda(255, 255);
+    delay(TEMPO_CURVA);
+  } else if (SENSOR[0] == PRETO && SENSOR[1] == PRETO && SENSOR[2] == BRANCO && SENSOR[3] == PRETO && SENSOR[4] == BRANCO) {
+    curva_direita(255, 255);
+    delay(TEMPO_CURVA);
+  } else if (SENSOR[0] == BRANCO && SENSOR[1] == PRETO && SENSOR[2] == BRANCO && SENSOR[3] == PRETO &&SENSOR[4] == BRANCO) {
+    // vai decidir no dia qual trajeto é menor
+    //curva_direita(255, 255);
+    //curva_esquerda(255, 255);
+    delay(TEMPO_CURVA);
   }
   
   calcula_erro();
-  calculaPID();
+  calcula_PID();
   if (erro == -10) {
     parar();
   } else {
@@ -56,8 +58,8 @@ void loop() {
 }
 
 void ajusta_movimento() {
-  int velocidadeDireita = constrain(velocidadeBase + PID, 1, 255);
-  int velocidadeEsquerda = constrain(velocidadeBase - PID, 1, 255);
+  int velocidadeDireita = constrain(velocidadeBaseDireita + PID, 1, 255);
+  int velocidadeEsquerda = constrain(velocidadeBaseEsquerda - PID, 1, 255);
 
   andar(velocidadeDireita, velocidadeEsquerda);
 }
@@ -78,7 +80,6 @@ void calcula_erro() {
   }
 }
 
-// calcula a integral para a corrente
 void calcula_PID() {
   P = erro;
   if (erro == 0) {
@@ -87,10 +88,10 @@ void calcula_PID() {
   I = I + P;
   if (I > 255) {
     I = 255;
-  } else if (I < 255){
+  } else if (I < -255){
     I = -255;
   }
   D = erro - erroAnterior;
-  PID = (Kp* P) + (Ki * I) + (Kd*D);
+  PID = (Kp * P) + (Ki * I) + (Kd*D);
   erroAnterior = erro;
 }

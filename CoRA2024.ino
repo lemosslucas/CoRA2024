@@ -35,14 +35,12 @@ void setup() {
 }
 
 void loop() {
-
   SENSOR[0] = digitalRead(SENSOR_0);
   SENSOR[1] = digitalRead(SENSOR_1);
   SENSOR[2] = digitalRead(SENSOR_2);
   SENSOR[3] = digitalRead(SENSOR_3);
   SENSOR[4] = digitalRead(SENSOR_4);
-
-  /* ainda tem que implementar
+  /*
   if (SENSOR[0] == BRANCO && SENSOR[1] == PRETO && SENSOR[2] == BRANCO && SENSOR[3] == PRETO && SENSOR[4] == PRETO) {
     curva_esquerda(255, 255);
     delay(TEMPO_CURVA);

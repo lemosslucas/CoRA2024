@@ -30,6 +30,24 @@ void andar(int velocidadeDireita, int velocidadeEsquerda) {
   analogWrite(MOTOR_PWM_DIREITO, velocidadeEsquerda);
 }
 
+void parar() {
+  digitalWrite(MOTOR_ESQUERDO_ANTI, LOW);
+  digitalWrite(MOTOR_ESQUERDO_HORARIO, LOW);
+  digitalWrite(MOTOR_DIREITO_HORARIO, LOW);
+  digitalWrite(MOTOR_DIREITO_ANTI, LOW);
+}
+
+void andar_de_re(int velocidadeDireita, int velocidadeEsquerda) {
+  digitalWrite(MOTOR_ESQUERDO_ANTI, HIGH);
+  digitalWrite(MOTOR_ESQUERDO_HORARIO, LOW);
+  digitalWrite(MOTOR_DIREITO_HORARIO, LOW);
+  digitalWrite(MOTOR_DIREITO_ANTI, HIGH);
+
+  // controla a velocidade 
+  analogWrite(MOTOR_PWM_ESQUERDO, velocidadeDireita);
+  analogWrite(MOTOR_PWM_DIREITO, velocidadeEsquerda);
+}
+
 // funcao para a curva de 90 a direita
 void curva_direita(int velocidadeDireita, int velocidadeEsquerda) {
   digitalWrite(MOTOR_ESQUERDO_ANTI, LOW);
@@ -51,22 +69,3 @@ void curva_esquerda(int velocidadeDireita, int velocidadeEsquerda) {
   analogWrite(MOTOR_PWM_ESQUERDO, velocidadeDireita);
   analogWrite(MOTOR_PWM_DIREITO, velocidadeEsquerda);  
 }
-
-void parar() {
-  digitalWrite(MOTOR_ESQUERDO_ANTI, LOW);
-  digitalWrite(MOTOR_ESQUERDO_HORARIO, LOW);
-  digitalWrite(MOTOR_DIREITO_HORARIO, LOW);
-  digitalWrite(MOTOR_DIREITO_ANTI, LOW);
-}
-
-void andar_de_re(int velocidadeDireita, int velocidadeEsquerda) {
-  digitalWrite(MOTOR_ESQUERDO_ANTI, HIGH);
-  digitalWrite(MOTOR_ESQUERDO_HORARIO, LOW);
-  digitalWrite(MOTOR_DIREITO_HORARIO, LOW);
-  digitalWrite(MOTOR_DIREITO_ANTI, HIGH);
-
-  // controla a velocidade 
-  analogWrite(MOTOR_PWM_ESQUERDO, velocidadeDireita);
-  analogWrite(MOTOR_PWM_DIREITO, velocidadeEsquerda);
-}
-

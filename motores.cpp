@@ -9,8 +9,6 @@ const int MOTOR_DIREITO_ANTI = 8;
 const int MOTOR_PWM_ESQUERDO = 5;
 const int MOTOR_PWM_DIREITO = 6;
 
-#define TEMPO_CURVA 100
-
 void setup_motor() {
   pinMode(MOTOR_ESQUERDO_HORARIO, OUTPUT);
   pinMode(MOTOR_ESQUERDO_ANTI, OUTPUT);
@@ -52,16 +50,10 @@ void andar_de_re(int velocidadeDireita, int velocidadeEsquerda) {
 
 // funcao para a curva de 90 a direita
 void curva_direita(int velocidadeDireita, int velocidadeEsquerda) {
-  andar(velocidadeDireita, velocidadeEsquerda);
-  delay(TEMPO_CURVA);
-  parar();
-  delay(TEMPO_CURVA);
-
   digitalWrite(MOTOR_ESQUERDO_ANTI, LOW);
   digitalWrite(MOTOR_ESQUERDO_HORARIO, HIGH);
   digitalWrite(MOTOR_DIREITO_HORARIO, LOW);
   digitalWrite(MOTOR_DIREITO_ANTI, HIGH);
-  delay(TEMPO_CURVA);
   
   analogWrite(MOTOR_PWM_ESQUERDO, velocidadeEsquerda);
   analogWrite(MOTOR_PWM_DIREITO, velocidadeDireita);
@@ -69,11 +61,6 @@ void curva_direita(int velocidadeDireita, int velocidadeEsquerda) {
 
 //funcao para a curva de 90 a esquerda
 void curva_esquerda(int velocidadeDireita, int velocidadeEsquerda) {
-  andar(velocidadeDireita, velocidadeEsquerda);
-  delay(TEMPO_CURVA);
-  parar();
-  delay(TEMPO_CURVA);
-
   digitalWrite(MOTOR_ESQUERDO_ANTI, HIGH);
   digitalWrite(MOTOR_ESQUERDO_HORARIO, LOW);
   digitalWrite(MOTOR_DIREITO_HORARIO, HIGH);

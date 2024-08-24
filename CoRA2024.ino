@@ -13,18 +13,17 @@ int SENSOR[5];
 
 #define BRANCO 0 
 #define PRETO 1
-#define TEMPO_CURVA 300
-#define OFFSET 10
+#define OFFSET 0
+#define PARAR -5
 
-int velocidadeBaseDireita = 170;
-int velocidadeBaseEsquerda = 170;
+int velocidadeBaseDireita = 150; //150
+int velocidadeBaseEsquerda = 170; //170
 const int velocidadeCurva90 = 170;
 
 // variaveis para o calculo do PID
-int erro = 0; int PID = 0; int erroAnterior = 0;
-int I = 0; int P = erro; int D = 0; 
-const int Ki = 1, Kd = 5, Kp = 10; 
-bool carro_centralizado = true;
+int erro = 0; int erroAnterior = 0;
+float I = 0, P = erro, D = 0, PID = 0; 
+const float Ki = 0.1, Kd = 0.5, Kp = 45; 
 
 void setup() {
   pinMode(SENSOR_0, INPUT);
@@ -33,14 +32,8 @@ void setup() {
   pinMode(SENSOR_3, INPUT);
   pinMode(SENSOR_4, INPUT);
 
-  delay(1000);
-  andar(velocidadeBaseDireita, velocidadeBaseEsquerda);
-  delay(TEMPO_CURVA);
-  andar_de_re(velocidadeBaseDireita, velocidadeBaseEsquerda);
-  delay(TEMPO_CURVA);
-  parar();
   Serial.begin(9600);
-  delay(4000);
+  delay(1000);
 }
 
 void ler_sensores(){
@@ -51,77 +44,23 @@ void ler_sensores(){
   SENSOR[4] = digitalRead(SENSOR_4);
 }
 
-void loop() {
-  bool curva_detectada;
-
-  ler_sensores();  
-  calcula_erro();
-  curva_detectada = verifica_curva_90();
-
-  if (curva_detectada == false) {
-    if (erro != NULL) {
-      erro = 0;
-      calcula_PID();
-      ajusta_movimento();
-    } else {
-      parar();
-    }
-  }
-  
-  Serial.print("Erro: ");
-  Serial.print(erro);
-  Serial.print(" PID: ");
-  Serial.print(PID);
-  Serial.print(" Velocidade Direita: ");
-  Serial.print(velocidadeBaseDireita - PID);
-  Serial.print(" Velocidade Esquerda: ");
-  Serial.println(velocidadeBaseEsquerda + PID);
-
-  delay(50);
-}
-
 void ajusta_movimento() {
-  int velocidadeDireita = constrain(velocidadeBaseDireita - PID, 0, 255);
-  int velocidadeEsquerda = constrain(velocidadeBaseEsquerda + PID, 0, 255);
-
+  int velocidadeDireita = constrain(velocidadeBaseDireita + PID, 1, 255);
+  int velocidadeEsquerda = constrain(velocidadeBaseEsquerda - PID, 1, 255);
   andar(velocidadeDireita, velocidadeEsquerda);
 }
 
 bool verifica_curva_90() {
   if (SENSOR[0] == BRANCO && SENSOR[1] == PRETO && SENSOR[2] == BRANCO && SENSOR[3] == PRETO && SENSOR[4] == PRETO) {
-    Serial.println("curva esquerda"); 
-    carro_centralizado = verifica_carro_centralizado();
-
-    while(!carro_centralizado) {
-      curva_esquerda(velocidadeCurva90, velocidadeCurva90);
-    } 
-    parar();
-
+    Serial.println("CURVA A ESQUERDA");
     return true;
-  } else if (SENSOR[0] == PRETO && SENSOR[1] == PRETO && SENSOR[2] == BRANCO && SENSOR[3] == PRETO && SENSOR[4] == BRANCO) {
-    Serial.println("curva direita");
-    carro_centralizado = verifica_carro_centralizado();
-
-    while(!carro_centralizado) {
-      curva_direita(velocidadeCurva90, velocidadeCurva90);
-    } 
-    parar();
-
+  } else if (SENSOR[0] == PRETO && SENSOR[1] == PRETO && SENSOR[2] == BRANCO && SENSOR[3] == PRETO && SENSOR[4] == BRANCO) { 
+    Serial.println("CURVA A DIREITA");
     return true;
   } else if (SENSOR[0] == BRANCO && SENSOR[1] == PRETO && SENSOR[2] == BRANCO && SENSOR[3] == PRETO && SENSOR[4] == BRANCO) {
     Serial.println("curva em duvida");
-    carro_centralizado = verifica_carro_centralizado();
-
-    // vai decidir no dia qual trajeto é menor
-    while(!carro_centralizado) {
-      curva_direita(velocidadeCurva90, velocidadeCurva90); 
-      // curva_esquerda(velocidadeCurva90, velocidadeCurva90);
-    } 
-    parar();
-
     return true;
   }
-
   return false;
 }
 
@@ -138,7 +77,7 @@ void calcula_erro() {
     } else if (SENSOR[1] == BRANCO && SENSOR[2] == PRETO && SENSOR[3] == PRETO) {
       erro = 2; // carro muito a direita
     } else if (SENSOR[1] == PRETO && SENSOR[2] == PRETO && SENSOR[3] == PRETO) {
-      erro = NULL;
+      erro = PARAR;
     } 
   }
 }
@@ -152,9 +91,53 @@ bool verifica_carro_centralizado() {
 }
 
 void calcula_PID() {
+  PID = 0;
   P = erro;
-  I = constrain(I+P, 1, 255);
+  I = constrain(I+P, -255, 255);
   D = erro - erroAnterior;
   PID = (Kp * P) + (Ki * I) + (Kd*D) + OFFSET;
   erroAnterior = erro;
+}
+
+void imprime_serial() {
+  Serial.print("Erro: ");
+  Serial.print(erro);
+  Serial.print(" PID: ");
+  Serial.print(PID);
+  Serial.print(" Velocidade Direita: ");
+  Serial.print(constrain(velocidadeBaseDireita + PID, 1, 255));
+  Serial.print(" Velocidade Esquerda: ");
+  Serial.println(constrain(velocidadeBaseEsquerda - PID, 1, 255));
+}
+
+void loop() {
+  bool curva_detectada;
+
+  ler_sensores();  
+  calcula_erro();
+
+  imprime_serial();
+
+  if (verifica_curva_90()) {
+    while(!verifica_carro_centralizado()) {
+      if (SENSOR[0] == BRANCO) {
+        curva_esquerda(velocidadeCurva90, velocidadeCurva90);
+      } else {
+        curva_direita(velocidadeCurva90, velocidadeCurva90);
+      }
+      delay(100);
+    }
+    parar();
+    delay(100);
+  } else {
+    if (erro != PARAR) {
+      calcula_PID();
+      ajusta_movimento();
+    } else {
+      parar();
+      erro = 0;
+    }
+  }
+  
+  delay(10);
 }

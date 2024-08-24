@@ -64,7 +64,6 @@ void curva_direita(int velocidadeDireita, int velocidadeEsquerda) {
 
 //funcao para a curva de 90 a esquerda
 void curva_esquerda(int velocidadeDireita, int velocidadeEsquerda) {
-
   digitalWrite(MOTOR_ESQUERDO_ANTI, HIGH);
   digitalWrite(MOTOR_ESQUERDO_HORARIO, LOW);
   digitalWrite(MOTOR_DIREITO_HORARIO, HIGH);

@@ -111,8 +111,6 @@ void imprime_serial() {
 }
 
 void loop() {
-  bool curva_detectada;
-
   ler_sensores();  
   calcula_erro();
 

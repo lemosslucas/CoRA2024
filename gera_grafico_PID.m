@@ -15,7 +15,7 @@ plot(tempo, erro, 'x', 'markersize', 10)
 title('tempo x erro')
 xlabel('tempo (S)')
 ylabel('erro')
-axis([0, max(tempo), -3, 3]);
+ axis([0, max(tempo), -5, 5]);
 
 figure 2
 hold on; grid on;

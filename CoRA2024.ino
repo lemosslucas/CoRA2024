@@ -26,13 +26,8 @@ float I = 0, P = erro, D = 0, PID = 0;
 //utilizacao de UltimateGain 35 e 12 ate agora
 //const float Kcr = 150, Pcr = 0.5;
 
-<<<<<<< HEAD
 //parece que o melhor Kp é 50
 const float Kp = 55, Ki = 0, Kd = 0;
-=======
-//parece que o melhor Kp é 150
-const float Kp = 145, Ki = 0, Kd = 0;
->>>>>>> 3deba36ef72484a5052ec2f6302cba8a315016a4
 //const float Kp = (0.6 * Kcr), Ki = ((2 * Kp) / Pcr), Kd = ((Kp * Pcr) / 8); 
 
 //apenas para testar o carro
@@ -59,13 +54,8 @@ void ler_sensores(){
 }
 
 void ajusta_movimento() {
-<<<<<<< HEAD
   int velocidadeDireita = constrain(velocidadeBaseDireita + PID, 1, 200);
   int velocidadeEsquerda = constrain(velocidadeBaseEsquerda - PID, 1, 200);
-=======
-  int velocidadeDireita = constrain(velocidadeBaseDireita + PID, 1, 160);
-  int velocidadeEsquerda = constrain(velocidadeBaseEsquerda - PID, 1, 210);
->>>>>>> 3deba36ef72484a5052ec2f6302cba8a315016a4
   andar(velocidadeDireita, velocidadeEsquerda);
 }
 
@@ -85,7 +75,6 @@ bool verifica_curva_90() {
 }
 
 void calcula_erro() {
-<<<<<<< HEAD
   ler_sensores(); 
 
   int pesos[5] = {-2, -1, 0, 2, 1};
@@ -97,31 +86,12 @@ void calcula_erro() {
     sensoresInativos += SENSOR[i];
   }
 
-  if(sensoresInativos == QUANTIDADE_TOTAL_SENSORES){
+  if (sensoresInativos == QUANTIDADE_TOTAL_SENSORES){
     erro = LINHA_NAO_DETECTADA;
   } else {
     int sensoresAtivos = QUANTIDADE_TOTAL_SENSORES - sensoresInativos;
     erro = somatorioErro / sensoresAtivos;
   }
-=======
-  if (SENSOR[0] == PRETO && SENSOR[4] == PRETO) {
-    if (SENSOR[1] == PRETO && SENSOR[2] == BRANCO && SENSOR[3] == PRETO) {
-      erro = 0; // Anda reto
-    } else if (SENSOR[1] == PRETO && SENSOR[2] == BRANCO && SENSOR[3] == BRANCO) {
-      erro = -1; // carro pouco a esquerda
-    } else if (SENSOR[1] == BRANCO && SENSOR[2] == BRANCO && SENSOR[3] == PRETO) {
-      erro = 1; // carro muito a direita
-    } else if (SENSOR[1] == PRETO && SENSOR[2] == PRETO && SENSOR[3] == BRANCO) {
-      erro = -2; // carro muito a esquerda
-    } else if (SENSOR[1] == BRANCO && SENSOR[2] == PRETO && SENSOR[3] == PRETO) {
-      erro = 2; // carro muito a direita
-    } else if (SENSOR[1] == PRETO && SENSOR[2] == PRETO && SENSOR[3] == PRETO) {
-      erro = PARAR;
-    } else {
-      erro = 0;
-    }
-  } 
->>>>>>> 3deba36ef72484a5052ec2f6302cba8a315016a4
 }
 
 void calcula_PID() {
@@ -134,16 +104,12 @@ void calcula_PID() {
 }
 
 void imprime_serial() {
-<<<<<<< HEAD
   Serial.print(SENSOR[0]);
   Serial.print(SENSOR[1]);
   Serial.print(SENSOR[2]);
   Serial.print(SENSOR[3]);
   Serial.print(SENSOR[4]);
-
-=======
   
->>>>>>> 3deba36ef72484a5052ec2f6302cba8a315016a4
   Serial.print("Erro: ");
   Serial.print(erro);
   Serial.print(" PID: ");
@@ -151,12 +117,6 @@ void imprime_serial() {
   Serial.print(" Velocidade Direita: ");
   Serial.print(constrain(velocidadeBaseDireita + PID, 1, 200));
   Serial.print(" Velocidade Esquerda: ");
-<<<<<<< HEAD
-  Serial.println(constrain(velocidadeBaseEsquerda - PID, 1, 200));
-=======
-  Serial.println(constrain(velocidadeBaseEsquerda - PID, 1, 220));
->>>>>>> 3deba36ef72484a5052ec2f6302cba8a315016a4
-  
 
   /*
   Serial.print(erro);
@@ -171,7 +131,6 @@ void loop() {
   calcula_erro();
   imprime_serial();
 
-<<<<<<< HEAD
   if (erro == LINHA_NAO_DETECTADA) {
     Serial.println("LINHA_NAO_DETECTADA");
     parar();
@@ -181,16 +140,4 @@ void loop() {
   }  
 
   delay(5);
-=======
-  if (erro != PARAR) {
-    calcula_PID();
-    ajusta_movimento();
-  } else {
-    parar();
-  }
-  
-  //erro = 0;
-  
-  delay(50);
->>>>>>> 3deba36ef72484a5052ec2f6302cba8a315016a4
 }

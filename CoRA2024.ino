@@ -17,8 +17,8 @@ int SENSOR[5];
 #define LINHA_NAO_DETECTADA -5
 #define QUANTIDADE_TOTAL_SENSORES 5
 
-const int velocidadeBaseDireita = 170; //160
-const int velocidadeBaseEsquerda = 195; //210
+const int velocidadeBaseDireita = 160; //160
+const int velocidadeBaseEsquerda = 210; //210
 
 // variaveis para o calculo do PID
 float erro = 0; float erroAnterior = 0;
@@ -117,6 +117,7 @@ void imprime_serial() {
   Serial.print(" Velocidade Direita: ");
   Serial.print(constrain(velocidadeBaseDireita + PID, 1, 200));
   Serial.print(" Velocidade Esquerda: ");
+  Serial.println(constrain(velocidadeBaseEsquerda - PID, 1, 200));
 
   /*
   Serial.print(erro);

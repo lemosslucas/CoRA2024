@@ -8,8 +8,13 @@ const int SENSOR_2 = 16;
 const int SENSOR_3 = 17;
 const int SENSOR_4 = 18;
 
+//sensores para a curva
+const int SENSOR_ESQUERDA = 19;
+const int SENSOR_DIREITA = 20;
+
 // variaveis para ler a saida do sensor
 int SENSOR[5];
+int SENSOR_CURVA[2];
 
 #define BRANCO 0 
 #define PRETO 1
@@ -19,13 +24,13 @@ int SENSOR[5];
 
 const int velocidadeBaseDireita = 160; //160
 const int velocidadeBaseEsquerda = 160; //210
-
 int velocidadeDireita = 0;
 int velocidadeEsquerda = 0;
 
 // variaveis para o calculo do PID
 float erro = 0; float erroAnterior = 0;
-float I = 0, P = erro, D = 0, PID = 0; 
+float I = 0, P = erro, D = 0, PID = 0;
+
 //utilizacao de UltimateGain 35 e 12 ate agora
 //const float Kcr = 150, Pcr = 0.5;
 
@@ -55,6 +60,9 @@ void ler_sensores(){
   SENSOR[2] = digitalRead(SENSOR_2);
   SENSOR[3] = digitalRead(SENSOR_3);
   SENSOR[4] = digitalRead(SENSOR_4);
+
+  SENSOR_CURVA[0] = digitalRead(SENSOR_ESQUERDA);
+  SENSOR_CURVA[1] = digitalRead(SENSOR_DIREITA);
 }
 
 void ajusta_movimento() {
@@ -78,17 +86,28 @@ void ajusta_movimento() {
 }
 
 bool verifica_curva_90() {
-  if (SENSOR[0] == BRANCO && SENSOR[1] == PRETO && SENSOR[2] == BRANCO && SENSOR[3] == PRETO && SENSOR[4] == PRETO) {
+  if (SENSOR_CURVA[0] == BRANCO && SENSOR[0] == BRANCO && SENSOR[1] == PRETO && SENSOR[2] == BRANCO && SENSOR[3] == PRETO && SENSOR[4] == PRETO && SENSOR_CURVA[1] == PRETO) {
     //Serial.println("CURVA A ESQUERDA");
     return true;
-  } else if (SENSOR[0] == PRETO && SENSOR[1] == PRETO && SENSOR[2] == BRANCO && SENSOR[3] == PRETO && SENSOR[4] == BRANCO) { 
+  } else if (SENSOR_CURVA[0] == PRETO && SENSOR[0] == PRETO && SENSOR[1] == PRETO && SENSOR[2] == BRANCO && SENSOR[3] == PRETO && SENSOR[4] == BRANCO && SENSOR_CURVA[1] == BRANCO) { 
     //Serial.println("CURVA A DIREITA");
     return true;
-  } else if (SENSOR[0] == BRANCO && SENSOR[1] == PRETO && SENSOR[2] == BRANCO && SENSOR[3] == PRETO && SENSOR[4] == BRANCO) {
+  } else if (SENSOR_CURVA[0] == BRANCO && SENSOR[0] == BRANCO && SENSOR[1] == PRETO && SENSOR[2] == BRANCO && SENSOR[3] == PRETO && SENSOR[4] == BRANCO && SENSOR_CURVA[1] == BRANCO) {
     //Serial.println("curva em duvida");
     return true;
   }
   return false;
+}
+
+void realiza_curva_90() {
+  if (SENSOR_CURVA[0] == BRANCO && SENSOR[1] == PRETO) {
+    curva_esquerda(velocidadeBaseDireita, velocidadeBaseEsquerda);
+  } else if (SENSOR[0] == PRETO && SENSOR[1] == BRANCO) {
+    curva_direita(velocidadeBaseDireita, velocidadeBaseEsquerda);
+  } else if (SENSOR[0] == BRANCO && SENSOR[1] == BRANCO) {
+    curva_esquerda(velocidadeBaseDireita, velocidadeBaseEsquerda);
+    //curva_direita(velocidadeBaseDireita, velocidadeBaseEsquerda);
+  }
 }
 
 void calcula_erro() {
@@ -149,14 +168,18 @@ void imprime_serial() {
 void loop() {
   calcula_erro();
 
-  if (erro == LINHA_NAO_DETECTADA) {
-    PID = 0;
-    parar();
+  if (verifica_curva_90()) {
+    realiza_curva_90();
   } else {
-    calcula_PID();
-    ajusta_movimento();
-  }  
-  imprime_serial();
+    if (erro == LINHA_NAO_DETECTADA) {
+      PID = 0;
+      parar();
+    } else {
+      calcula_PID();
+      ajusta_movimento();
+    }  
+  }
 
- delay(1);
+  imprime_serial();
+  delay(5);
 }

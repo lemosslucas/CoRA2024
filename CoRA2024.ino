@@ -1,16 +1,16 @@
 #include "motores.h"
 
 // define os sensores
-// SENSOR_0 == ESQUERDA :: SENSOR_4 == DIREITA
-const int SENSOR_0 = 14;
-const int SENSOR_1 = 15;
-const int SENSOR_2 = 16;
-const int SENSOR_3 = 17;
-const int SENSOR_4 = 18;
+// sensor1_A1 == ESQUERDA :: sensor5_A5 == DIREITA // sensor0_curva_A0 == ESQUERDA & sensor6_curva_A6 == DIREITA
+const int sensor1_A1 = 15;
+const int sensor2_A2 = 16;
+const int sensor3_A3 = 17;
+const int sensor4_A4 = 18;
+const int sensor5_A5 = 19;
 
 //sensores para a curva
-const int SENSOR_ESQUERDA = 19;
-const int SENSOR_DIREITA = 20;
+const int sensor0_curva_A0 = 14;
+const int sensor6_curva_A6 = 10;
 
 // variaveis para ler a saida do sensor
 int SENSOR[5];
@@ -23,7 +23,7 @@ int SENSOR_CURVA[2];
 #define QUANTIDADE_TOTAL_SENSORES 5
 
 const int velocidadeBaseDireita = 160; //160
-const int velocidadeBaseEsquerda = 160; //210
+const int velocidadeBaseEsquerda = 180; //210
 int velocidadeDireita = 0;
 int velocidadeEsquerda = 0;
 
@@ -35,18 +35,20 @@ float I = 0, P = erro, D = 0, PID = 0;
 //const float Kcr = 150, Pcr = 0.5;
 
 //parece que o melhor Kp é [125]
-const float Kp = 125, Ki = 0, Kd = 0;
+const float Kp = 150, Ki = 0, Kd = 0;
 //const float Kp = (0.6 * Kcr), Ki = ((2 * Kp) / Pcr), Kd = ((Kp * Pcr) / 8); 
 
 //apenas para testar o carro
 unsigned long tempoInicial = millis();
 
 void setup() {
-  pinMode(SENSOR_0, INPUT);
-  pinMode(SENSOR_1, INPUT);
-  pinMode(SENSOR_2, INPUT);
-  pinMode(SENSOR_3, INPUT);
-  pinMode(SENSOR_4, INPUT);
+  pinMode(sensor1_A1, INPUT);
+  pinMode(sensor2_A2, INPUT);
+  pinMode(sensor3_A3, INPUT);
+  pinMode(sensor4_A4, INPUT);
+  pinMode(sensor5_A5, INPUT);
+  pinMode(sensor0_curva_A0, INPUT);
+  pinMode(sensor6_curva_A6, INPUT);
 
   parar();
   delay(2000);
@@ -55,14 +57,14 @@ void setup() {
 }
 
 void ler_sensores(){
-  SENSOR[0] = digitalRead(SENSOR_0);
-  SENSOR[1] = digitalRead(SENSOR_1);
-  SENSOR[2] = digitalRead(SENSOR_2);
-  SENSOR[3] = digitalRead(SENSOR_3);
-  SENSOR[4] = digitalRead(SENSOR_4);
+  SENSOR[0] = digitalRead(sensor1_A1);
+  SENSOR[1] = digitalRead(sensor2_A2);
+  SENSOR[2] = digitalRead(sensor3_A3);
+  SENSOR[3] = digitalRead(sensor4_A4);
+  SENSOR[4] = digitalRead(sensor5_A5);
 
-  SENSOR_CURVA[0] = digitalRead(SENSOR_ESQUERDA);
-  SENSOR_CURVA[1] = digitalRead(SENSOR_DIREITA);
+  SENSOR_CURVA[0] = digitalRead(sensor0_curva_A0);
+  SENSOR_CURVA[1] = digitalRead(sensor6_curva_A6);
 }
 
 void ajusta_movimento() {
@@ -80,20 +82,31 @@ void ajusta_movimento() {
   andar(velocidadeDireita, velocidadeEsquerda);
   */
 
-  velocidadeDireita = constrain(velocidadeBaseDireita + PID, 0, 200);
-  velocidadeEsquerda = constrain(velocidadeBaseEsquerda - PID, 0, 200);
+  velocidadeDireita = constrain(velocidadeBaseDireita - PID, 0, 170);
+  velocidadeEsquerda = constrain(velocidadeBaseEsquerda + PID, 0, 190);
   andar(velocidadeDireita, velocidadeEsquerda);
 }
 
 bool verifica_curva_90() {
   if (SENSOR_CURVA[0] == BRANCO && SENSOR[0] == BRANCO && SENSOR[1] == PRETO && SENSOR[2] == BRANCO && SENSOR[3] == PRETO && SENSOR[4] == PRETO && SENSOR_CURVA[1] == PRETO) {
     //Serial.println("CURVA A ESQUERDA");
+    Serial.println();
+    Serial.println("Curva esquerda");
+    Serial.println();
     return true;
   } else if (SENSOR_CURVA[0] == PRETO && SENSOR[0] == PRETO && SENSOR[1] == PRETO && SENSOR[2] == BRANCO && SENSOR[3] == PRETO && SENSOR[4] == BRANCO && SENSOR_CURVA[1] == BRANCO) { 
-    //Serial.println("CURVA A DIREITA");
+    
+    Serial.println();
+    Serial.println("Curva direita");
+    Serial.println();
+
     return true;
   } else if (SENSOR_CURVA[0] == BRANCO && SENSOR[0] == BRANCO && SENSOR[1] == PRETO && SENSOR[2] == BRANCO && SENSOR[3] == PRETO && SENSOR[4] == BRANCO && SENSOR_CURVA[1] == BRANCO) {
-    //Serial.println("curva em duvida");
+
+    Serial.println();
+    Serial.println("Curva em duvida");
+    Serial.println();
+    
     return true;
   }
   return false;
@@ -142,10 +155,16 @@ void calcula_PID() {
 }
 
 void imprime_serial() {
+  Serial.print(SENSOR_CURVA[0]);
+  Serial.print(" | ");
+
   for (int i = 0; i < 5; i++) {
     Serial.print(SENSOR[i]);
     Serial.print(" | ");
   }
+
+  Serial.print(SENSOR_CURVA[1]);
+  Serial.print(" | ");
 
   Serial.print("\tErro: ");
   Serial.print(erro);
@@ -169,6 +188,9 @@ void loop() {
   calcula_erro();
 
   if (verifica_curva_90()) {
+    andar(velocidadeBaseDireita, velocidadeBaseEsquerda);
+    delay(300);
+    parar();
     realiza_curva_90();
   } else {
     if (erro == LINHA_NAO_DETECTADA) {

@@ -50,10 +50,10 @@ void andar_de_re(int velocidadeDireita, int velocidadeEsquerda) {
 
 // funcao para a curva de 90 a direita
 void curva_direita(int velocidadeDireita, int velocidadeEsquerda) {
-  digitalWrite(MOTOR_ESQUERDO_ANTI, LOW);
-  digitalWrite(MOTOR_ESQUERDO_HORARIO, HIGH);
-  digitalWrite(MOTOR_DIREITO_HORARIO, LOW);
-  digitalWrite(MOTOR_DIREITO_ANTI, HIGH);
+  digitalWrite(MOTOR_ESQUERDO_ANTI, HIGH);
+  digitalWrite(MOTOR_ESQUERDO_HORARIO, LOW);
+  digitalWrite(MOTOR_DIREITO_HORARIO, HIGH);
+  digitalWrite(MOTOR_DIREITO_ANTI, LOW);
   
   analogWrite(MOTOR_PWM_ESQUERDO, velocidadeEsquerda);
   analogWrite(MOTOR_PWM_DIREITO, velocidadeDireita);

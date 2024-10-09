@@ -13,7 +13,7 @@ tempo = tempo ./ 1000;
 figure 1
 hold on; grid on;
 plot(tempo, erro);
-plot(tempo, erro, 'x', 'markersize', 10)
+plot(tempo, erro, '.', 'color', 'k', 'markersize', 10)
 title('tempo x erro')
 xlabel('tempo (S)')
 ylabel('erro')

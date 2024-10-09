@@ -22,6 +22,7 @@ int SENSOR_CURVA[2];
 #define OFFSET 0
 #define LINHA_NAO_DETECTADA -5
 #define QUANTIDADE_TOTAL_SENSORES 5
+#define CURVA_NAO_ENCONTRADA 0 
 
 const int velocidadeBaseDireita = 160;   //160
 const int velocidadeBaseEsquerda = 180;  //210
@@ -34,9 +35,9 @@ float erroAnterior = 0;
 float I = 0, P = erro, D = 0, PID = 0;
 
 //utilizacao de UltimateGain 35 e 12 ate agora
-//const float Kcr = 150, Pcr = 0.5;
+//const float Kcr = 150, Pcr = 0.05;
 
-//parece que o melhor Kp é [125]
+//parece que o melhor Kp é [150]
 const float Kp = 150, Ki = 0, Kd = 0;
 //const float Kp = (0.6 * Kcr), Ki = ((2 * Kp) / Pcr), Kd = ((Kp * Pcr) / 8);
 
@@ -80,7 +81,7 @@ void calcula_erro() {
 
   verifica_inversao(SENSOR);
 
-  int pesos[5] = { -2, -1, 0, 1, 2 };
+  int pesos[5] = {-2, -1, 0, 1, 2};
   int somatorioErro = 0;
   int sensoresAtivos = 0;
 
@@ -89,7 +90,7 @@ void calcula_erro() {
     sensoresAtivos += SENSOR[i];
   }
 
-  if (sensoresAtivos == QUANTIDADE_TOTAL_SENSORES) {
+  if (sensoresAtivos == QUANTIDADE_TOTAL_SENSORES || (sensoresAtivos == 0 && SENSOR_CURVA[0] == BRANCO && SENSOR_CURVA[1] == BRANCO)) {
     erro = LINHA_NAO_DETECTADA;
   } else {
     int sensoresInativos = QUANTIDADE_TOTAL_SENSORES - sensoresAtivos;
@@ -109,6 +110,7 @@ void calcula_PID() {
 }
 
 void imprime_serial() {
+  /*
   Serial.print(SENSOR_CURVA[0]);
   Serial.print(" | ");
 
@@ -128,7 +130,8 @@ void imprime_serial() {
   Serial.print(velocidadeDireita);
   Serial.print(" Velocidade Esquerda: ");
   Serial.println(velocidadeEsquerda);
-
+  
+  */
   /*
   Serial.print(erro);
   Serial.print("\t");
@@ -141,8 +144,16 @@ void imprime_serial() {
 void loop() {
   calcula_erro();
 
-  if (verifica_curva_90(SENSOR, SENSOR_CURVA)) {
-    realiza_curva_90(SENSOR_CURVA);
+  int saidaCurva = verifica_curva_90(SENSOR, SENSOR_CURVA);
+  if (saidaCurva != CURVA_NAO_ENCONTRADA) {
+    
+    while(erro != LINHA_NAO_DETECTADA) {
+      ler_sensores();
+      calcula_erro();
+      ajusta_movimento();
+    }
+
+    realiza_curva_90(saidaCurva);
   } else {
     if (erro == LINHA_NAO_DETECTADA) {
       PID = 0;

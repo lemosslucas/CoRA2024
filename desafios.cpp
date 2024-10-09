@@ -5,6 +5,11 @@
 #define PRETO 1
 #define QUANTIDADE_TOTAL_SENSORES 5
 
+#define CURVA_ESQUERDA 1
+#define CURVA_DIREITA 2
+#define CURVA_EM_DUVIDA 3
+#define CURVA_NAO_ENCONTRADA 0
+
 const int velocidadeBaseDireita = 160; //160
 const int velocidadeBaseEsquerda = 180; //210
 
@@ -19,29 +24,58 @@ int calcula_sensores_ativos(int SENSOR[]) {
   return sensoresAtivos;
 }
 
-bool verifica_curva_90(int SENSOR[], int SENSOR_CURVA[]) {
-  if (calcula_sensores_ativos(SENSOR) == 4) {
-    if (SENSOR_CURVA[0] == BRANCO && SENSOR_CURVA[1] == PRETO ||
-       SENSOR_CURVA[0] == PRETO && SENSOR_CURVA[0] == BRANCO ||
-       SENSOR_CURVA[0] == BRANCO && SENSOR_CURVA[1] == BRANCO) {
-      return true;
-    }
+int calcula_erro_sensores(int SENSOR[]) {
+  int pesos[5] = {-2, -1, 0, 1, 2};
+  int somatorioErro = 0;
+  int sensoresAtivos = 0;
+
+  for (int i = 0; i < 5; i++) {
+    somatorioErro += SENSOR[i] * pesos[i];
+    sensoresAtivos += SENSOR[i];
   }
-  return false;
+
+  int sensoresInativos = QUANTIDADE_TOTAL_SENSORES - sensoresAtivos;
+  return somatorioErro / sensoresInativos;
 }
 
-void realiza_curva_90(int SENSOR_CURVA[]) {
-  andar(velocidadeBaseDireita, velocidadeBaseEsquerda);
-  delay(300);
-  parar();
+int verifica_curva_90(int SENSOR[], int SENSOR_CURVA[]) {
+  if (SENSOR_CURVA[0] == BRANCO && SENSOR[0] == BRANCO && SENSOR[1] == PRETO && SENSOR[2] == BRANCO && SENSOR[3] == PRETO && SENSOR[4] == PRETO && SENSOR_CURVA[1] == PRETO) {
+    return CURVA_ESQUERDA;
+  } else if (SENSOR_CURVA[0] == PRETO && SENSOR[0] == PRETO && SENSOR[1] == PRETO && SENSOR[2] == BRANCO && SENSOR[3] == PRETO && SENSOR[4] == BRANCO && SENSOR_CURVA[1] == BRANCO) {
+    return CURVA_DIREITA;
+  } else if (SENSOR_CURVA[0] == BRANCO && SENSOR[0] == BRANCO && SENSOR[1] == PRETO && SENSOR[2] == BRANCO && SENSOR[3] == PRETO && SENSOR[4] == BRANCO && SENSOR_CURVA[1] == BRANCO) {
+    return CURVA_EM_DUVIDA;
+  }
+  
+  /*
+  int erro = calcula_erro_sensores(SENSOR);
+  Serial.println(erro);
+  
+  if (erro >= -1 && erro <= 1) {
+    if (SENSOR_CURVA[0] == BRANCO && SENSOR_CURVA[1] == PRETO) {
+      Serial.print("EU vi");
+      return CURVA_ESQUERDA;
+    } else if (SENSOR_CURVA[0] == PRETO && SENSOR_CURVA[1] == BRANCO) {
+      return CURVA_DIREITA;
+    } else if (SENSOR_CURVA[0] == BRANCO && SENSOR_CURVA[1] == BRANCO) {
+      return CURVA_EM_DUVIDA;
+    }
+  }
+  */ 
+  return CURVA_NAO_ENCONTRADA;
+}
 
-  if (SENSOR_CURVA[0] == BRANCO && SENSOR_CURVA[1] == PRETO) {
+void realiza_curva_90(int curvaEncontrada) {
+  parar();
+  delay(200);
+
+  if (curvaEncontrada == CURVA_ESQUERDA) {
     curva_esquerda(velocidadeBaseDireita, velocidadeBaseEsquerda);
-  } else if (SENSOR_CURVA[0] == PRETO && SENSOR_CURVA[1] == BRANCO) {
+  } else if (curvaEncontrada == CURVA_DIREITA) {
     curva_direita(velocidadeBaseDireita, velocidadeBaseEsquerda);
-  } else if (SENSOR_CURVA[0] == BRANCO && SENSOR_CURVA[1] == BRANCO) {
-    curva_esquerda(velocidadeBaseDireita, velocidadeBaseEsquerda);
-    //curva_direita(velocidadeBaseDireita, velocidadeBaseEsquerda);
+  } else if (curvaEncontrada == CURVA_EM_DUVIDA) {
+    //curva_esquerda(velocidadeBaseDireita, velocidadeBaseEsquerda);
+    curva_direita(velocidadeBaseDireita, velocidadeBaseEsquerda);
   }
 }
 
@@ -59,4 +93,6 @@ void verifica_inversao(int SENSOR[]) {
     }
   }
 }
+
+
 

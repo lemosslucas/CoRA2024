@@ -22,7 +22,8 @@ int SENSOR_CURVA[2];
 #define OFFSET 0
 #define LINHA_NAO_DETECTADA -5
 #define QUANTIDADE_TOTAL_SENSORES 5
-#define CURVA_NAO_ENCONTRADA 0 
+#define CURVA_NAO_ENCONTRADA 0
+
 
 const int velocidadeBaseDireita = 160;   //160
 const int velocidadeBaseEsquerda = 180;  //210
@@ -71,8 +72,8 @@ void ler_sensores() {
 }
 
 void ajusta_movimento() {
-  velocidadeDireita = constrain(velocidadeBaseDireita - PID, 0, 170);
-  velocidadeEsquerda = constrain(velocidadeBaseEsquerda + PID, 0, 190);
+  velocidadeDireita = constrain(velocidadeBaseDireita - PID, 0, 255);
+  velocidadeEsquerda = constrain(velocidadeBaseEsquerda + PID, 0, 255);
   andar(velocidadeDireita, velocidadeEsquerda);
 }
 
@@ -90,7 +91,8 @@ void calcula_erro() {
     sensoresAtivos += SENSOR[i];
   }
 
-  if (sensoresAtivos == QUANTIDADE_TOTAL_SENSORES || (sensoresAtivos == 0 && SENSOR_CURVA[0] == BRANCO && SENSOR_CURVA[1] == BRANCO)) {
+  // || (sensoresAtivos == 0 && SENSOR_CURVA[0] == BRANCO && SENSOR_CURVA[1] == BRANCO)
+  if (sensoresAtivos == QUANTIDADE_TOTAL_SENSORES) {
     erro = LINHA_NAO_DETECTADA;
   } else {
     int sensoresInativos = QUANTIDADE_TOTAL_SENSORES - sensoresAtivos;
@@ -146,18 +148,41 @@ void loop() {
 
   int saidaCurva = verifica_curva_90(SENSOR, SENSOR_CURVA);
   if (saidaCurva != CURVA_NAO_ENCONTRADA) {
-    
-    while(erro != LINHA_NAO_DETECTADA) {
+
+    //int sensoresAtivos = calcula_sensores_ativos(SENSOR);    
+    while(erro != LINHA_NAO_DETECTADA) { // < 3
       ler_sensores();
+      //calcula_sensores_ativos(SENSOR);
+
       calcula_erro();
       ajusta_movimento();
     }
-
+    
     realiza_curva_90(saidaCurva);
+    
+    /*
+    while (SENSOR[2] != BRANCO) {
+      ler_sensores();
+      realiza_curva_90(saidaCurva);
+    } */ 
+
+    parar();
+
   } else {
     if (erro == LINHA_NAO_DETECTADA) {
       PID = 0;
       parar();
+
+      delay(10000);
+      int sensoresAtivos = calcula_sensores_ativos(SENSOR);
+
+      while(sensoresAtivos == QUANTIDADE_TOTAL_SENSORES) {
+        ler_sensores();
+        sensoresAtivos = calcula_sensores_ativos(SENSOR);
+        andar_de_re(255, 255);
+      }
+
+      //volta_inatividade(255, 255); // velocidade
     } else {
       calcula_PID();
       ajusta_movimento();

@@ -94,5 +94,12 @@ void verifica_inversao(int SENSOR[]) {
   }
 }
 
+void volta_inatividade(int velocidadeDireita, int velocidadeEsquerda) {
+  delay(10000);
+  andar_de_re(velocidadeDireita, velocidadeEsquerda);
+  delay(250);
+  parar();
+  delay(100);
+}
 
 

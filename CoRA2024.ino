@@ -24,6 +24,10 @@ int SENSOR_CURVA[2];
 #define QUANTIDADE_TOTAL_SENSORES 5
 #define CURVA_NAO_ENCONTRADA 0
 
+#define DETECCAO_POR_QUADRADO 1
+#define SAIDA_ESQUERDA 0
+#define SAIDA_DIREITA 1
+int saida_rotatoria = -1;
 
 const int velocidadeBaseDireita = 160;   //160
 const int velocidadeBaseEsquerda = 180;  //210
@@ -44,6 +48,7 @@ const float Kp = 150, Ki = 0, Kd = 0;
 
 //apenas para testar o carro
 unsigned long tempoInicial = millis();
+bool faixa_de_pedestre = false;
 
 void setup() {
   pinMode(sensor1_A1, INPUT);
@@ -80,7 +85,9 @@ void ajusta_movimento() {
 void calcula_erro() {
   ler_sensores();
 
-  verifica_inversao(SENSOR);
+  if (verifica_inversao(SENSOR, SENSOR_CURVA)) {
+    faixa_de_pedestre = true;
+  }
 
   int pesos[5] = {-2, -1, 0, 1, 2};
   int somatorioErro = 0;
@@ -134,7 +141,8 @@ void imprime_serial() {
   Serial.println(velocidadeEsquerda);
   
   */
-  /*
+  /* 
+  //usado para a parte de geracao do grafico
   Serial.print(erro);
   Serial.print("\t");
   Serial.print(PID);
@@ -143,46 +151,134 @@ void imprime_serial() {
   */
 }
 
+int determina_saida_rotatoria(int marcacoesEsquerda, int marcacoesDireita) {
+  int saidaDesejada = 0;
+
+  if (marcacoesEsquerda > marcacoesDireita) {
+    saidaDesejada = (marcacoesEsquerda / DETECCAO_POR_QUADRADO) + 1;
+    curva_esquerda(velocidadeBaseDireita, velocidadeBaseEsquerda);
+    saida_rotatoria = SAIDA_ESQUERDA;
+  } else if(marcacoesEsquerda < marcacoesDireita) {
+    saidaDesejada = (marcacoesDireita / DETECCAO_POR_QUADRADO) + 1; 
+    curva_direita(velocidadeBaseDireita, velocidadeBaseEsquerda);
+    saida_rotatoria = SAIDA_DIREITA;
+  }
+  
+  return saidaDesejada;
+}
+
+void realiza_rotatoria(int saidaDesejada){
+  int saidaAtual = 1;
+
+  while(saidaAtual != saidaDesejada) {
+    calcula_erro();
+    ajusta_movimento();
+
+    if (saida_rotatoria == SAIDA_ESQUERDA) {
+      if (calcula_sensores_ativos(SENSOR) <= 3 && SENSOR_CURVA[0] == PRETO && SENSOR_CURVA[1] == BRANCO) {
+        // a condicao de parar é so um teste pra ver se esta tudo ok
+        parar();
+        delay(200);
+        saidaAtual++;
+      }
+    } else if(saida_rotatoria == SAIDA_DIREITA) {
+      if (calcula_sensores_ativos(SENSOR) <= 3 && SENSOR_CURVA[0] == BRANCO && SENSOR_CURVA[1] == PRETO) {
+        // a condicao de parar é so um teste pra ver se esta tudo ok
+        parar();
+        delay(200);
+        saidaAtual++;
+      }
+    }
+  }
+  
+  if (saida_rotatoria == SAIDA_ESQUERDA) {
+    curva_esquerda(velocidadeBaseDireita, velocidadeBaseEsquerda);
+  } else {
+    curva_direita(velocidadeBaseDireita, velocidadeBaseEsquerda);
+  }
+}
+
+void realiza_marcha_re(int historico[]) {
+  /* talvez precise desse for para deteccao
+  for (int i = 0; i < DETECCAO_POR_QUADRADO; i++) {
+    if (i > 0) {
+      historico[i] == historico[i - 1];
+    } 
+  }
+  */
+
+  while (erro != LINHA_NAO_DETECTADA) {
+    andar_de_re(255, 255);
+    calcula_erro();
+  }
+  parar();
+  delay(500);
+
+  // se o primeiro for esquerda ele vira a direita
+  if (historico[1] == SAIDA_ESQUERDA) {
+    curva_direita(velocidadeBaseDireita, velocidadeBaseEsquerda);
+  } else {
+    curva_esquerda(velocidadeBaseDireita, velocidadeBaseEsquerda);
+  }
+}
+
 void loop() {
+  int marcacoesDireita = 0, marcacoesEsquerda = 0;
   calcula_erro();
 
   int saidaCurva = verifica_curva_90(SENSOR, SENSOR_CURVA);
-  if (saidaCurva != CURVA_NAO_ENCONTRADA) {
+  int historico_curva[4 * DETECCAO_POR_QUADRADO];
+  int i = 0;
 
-    //int sensoresAtivos = calcula_sensores_ativos(SENSOR);    
+  if (saidaCurva != CURVA_NAO_ENCONTRADA) { 
     while(erro != LINHA_NAO_DETECTADA) { // < 3
       ler_sensores();
-      //calcula_sensores_ativos(SENSOR);
+      
+      if (SENSOR_CURVA[0] == BRANCO) {
+        marcacoesEsquerda++;
+        historico_curva[i] = SAIDA_ESQUERDA;
+      } else if (SENSOR_CURVA[1] == BRANCO) {
+        marcacoesDireita++;
+        historico_curva[i] = SAIDA_DIREITA;
+      }
 
+      i++;
       calcula_erro();
+      calcula_PID();
       ajusta_movimento();
     }
     
-    realiza_curva_90(saidaCurva);
-    
-    /*
-    while (SENSOR[2] != BRANCO) {
-      ler_sensores();
+    if (marcacoesEsquerda == DETECCAO_POR_QUADRADO || marcacoesDireita == DETECCAO_POR_QUADRADO) {
       realiza_curva_90(saidaCurva);
-    } */ 
+    } else if ((marcacoesEsquerda / DETECCAO_POR_QUADRADO) > 1 && (marcacoesDireita / DETECCAO_POR_QUADRADO) > 1) {
+      realiza_marcha_re(historico_curva);
+    } else{
+      determina_saida_rotatoria(marcacoesEsquerda, marcacoesDireita);
+    }
 
     parar();
-
   } else {
     if (erro == LINHA_NAO_DETECTADA) {
+      int sensoresAtivos = calcula_sensores_ativos(SENSOR);
       PID = 0;
+      
       parar();
 
-      delay(10000);
-      int sensoresAtivos = calcula_sensores_ativos(SENSOR);
+      if (faixa_de_pedestre == true) {
+        realiza_faixa_de_pedestre();
+        faixa_de_pedestre = false;
+      } else {  
+        delay(10000);
 
-      while(sensoresAtivos == QUANTIDADE_TOTAL_SENSORES) {
-        ler_sensores();
-        sensoresAtivos = calcula_sensores_ativos(SENSOR);
-        andar_de_re(255, 255);
+        while(sensoresAtivos == QUANTIDADE_TOTAL_SENSORES) {
+          ler_sensores();
+          sensoresAtivos = calcula_sensores_ativos(SENSOR);
+          andar_de_re(255, 255);
+        }
+
+        parar();
       }
 
-      //volta_inatividade(255, 255); // velocidade
     } else {
       calcula_PID();
       ajusta_movimento();

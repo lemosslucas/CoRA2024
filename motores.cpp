@@ -55,9 +55,9 @@ void curva_direita(int velocidadeDireita, int velocidadeEsquerda) {
   digitalWrite(MOTOR_DIREITO_HORARIO, HIGH);
   digitalWrite(MOTOR_DIREITO_ANTI, LOW);
   
-  analogWrite(MOTOR_PWM_ESQUERDO, velocidadeEsquerda);
+  analogWrite(MOTOR_PWM_ESQUERDO, velocidadeEsquerda + 40);
   analogWrite(MOTOR_PWM_DIREITO, velocidadeDireita);
-  delay(500);
+  delay(600);
 }
 
 //funcao para a curva de 90 a esquerda
@@ -68,6 +68,6 @@ void curva_esquerda(int velocidadeDireita, int velocidadeEsquerda) {
   digitalWrite(MOTOR_DIREITO_ANTI, HIGH);
 
   analogWrite(MOTOR_PWM_ESQUERDO, velocidadeEsquerda);
-  analogWrite(MOTOR_PWM_DIREITO, velocidadeDireita);
-  delay(500);
+  analogWrite(MOTOR_PWM_DIREITO, velocidadeDireita + 40);
+  delay(600);
 }

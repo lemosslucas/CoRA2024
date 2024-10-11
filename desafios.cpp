@@ -10,6 +10,8 @@
 #define CURVA_EM_DUVIDA 3
 #define CURVA_NAO_ENCONTRADA 0
 
+#define DETECCAO_POR_QUADRADO 1
+
 const int velocidadeBaseDireita = 160; //160
 const int velocidadeBaseEsquerda = 180; //210
 
@@ -39,29 +41,15 @@ int calcula_erro_sensores(int SENSOR[]) {
 }
 
 int verifica_curva_90(int SENSOR[], int SENSOR_CURVA[]) {
-  if (SENSOR_CURVA[0] == BRANCO && SENSOR[0] == BRANCO && SENSOR[1] == PRETO && SENSOR[2] == BRANCO && SENSOR[3] == PRETO && SENSOR[4] == PRETO && SENSOR_CURVA[1] == PRETO) {
+  if (SENSOR_CURVA[0] == BRANCO && SENSOR[0] == BRANCO && SENSOR[1] == PRETO && SENSOR[2] == BRANCO && SENSOR[3] == PRETO && SENSOR[4] == PRETO && SENSOR_CURVA[1] == PRETO
+  || calcula_sensores_ativos(SENSOR) == 3 && SENSOR_CURVA[0] == BRANCO && SENSOR_CURVA[1] == PRETO) {
     return CURVA_ESQUERDA;
   } else if (SENSOR_CURVA[0] == PRETO && SENSOR[0] == PRETO && SENSOR[1] == PRETO && SENSOR[2] == BRANCO && SENSOR[3] == PRETO && SENSOR[4] == BRANCO && SENSOR_CURVA[1] == BRANCO) {
     return CURVA_DIREITA;
   } else if (SENSOR_CURVA[0] == BRANCO && SENSOR[0] == BRANCO && SENSOR[1] == PRETO && SENSOR[2] == BRANCO && SENSOR[3] == PRETO && SENSOR[4] == BRANCO && SENSOR_CURVA[1] == BRANCO) {
     return CURVA_EM_DUVIDA;
   }
-  
-  /*
-  int erro = calcula_erro_sensores(SENSOR);
-  Serial.println(erro);
-  
-  if (erro >= -1 && erro <= 1) {
-    if (SENSOR_CURVA[0] == BRANCO && SENSOR_CURVA[1] == PRETO) {
-      Serial.print("EU vi");
-      return CURVA_ESQUERDA;
-    } else if (SENSOR_CURVA[0] == PRETO && SENSOR_CURVA[1] == BRANCO) {
-      return CURVA_DIREITA;
-    } else if (SENSOR_CURVA[0] == BRANCO && SENSOR_CURVA[1] == BRANCO) {
-      return CURVA_EM_DUVIDA;
-    }
-  }
-  */ 
+
   return CURVA_NAO_ENCONTRADA;
 }
 
@@ -86,20 +74,28 @@ int inverte_sensor(int sensor){
   return 1;
 }
 
-void verifica_inversao(int SENSOR[]) {
+bool verifica_inversao(int SENSOR[], int SENSOR_CURVA[]) {
+  if (calcula_sensores_ativos(SENSOR) == 1 && SENSOR_CURVA[0] == BRANCO && SENSOR_CURVA[1] == BRANCO) {
+    for (int i = 0; i < 5; i++) {
+      SENSOR[i] = inverte_sensor(SENSOR[i]);
+    }
+    return true;
+  }
+  /* isso ta funcionando, estou vendo se esta sendo aprimorado
   if (calcula_sensores_ativos(SENSOR) == 1) {
     for (int i = 0; i < 5; i++) {
       SENSOR[i] = inverte_sensor(SENSOR[i]);
     }
+    return true;
   }
+  */
+  return false;
 }
 
-void volta_inatividade(int velocidadeDireita, int velocidadeEsquerda) {
-  delay(10000);
-  andar_de_re(velocidadeDireita, velocidadeEsquerda);
-  delay(250);
-  parar();
-  delay(100);
+void realiza_faixa_de_pedestre() {
+  delay(6000);// tempo perfeito
+  andar(255, 255);
+  delay(2000); 
 }
 
-
+ 

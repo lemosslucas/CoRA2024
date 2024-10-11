@@ -6,8 +6,8 @@
 int verifica_curva_90(int SENSOR[], int SENSOR_CURVA[]);
 void realiza_curva_90(int curvaEncontrada);
 int inverte_sensor(int SENSOR);
-void verifica_inversao(int SENSOR[]);
+bool verifica_inversao(int SENSOR[], int SENSOR_CURVA[]);
 int calcula_sensores_ativos(int SENSOR[]);
-void volta_inatividade(int velocidadeDireita, int velocidadeEsquerda);
+void realiza_faixa_de_pedestre();
 
 #endif

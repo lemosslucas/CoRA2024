@@ -31,9 +31,30 @@ The competition challenge participants to prototype, build, program and test the
 - 1x Custom 3D Printed / PLA Chassis
 
 ## Developers
-- **[Lucas Lemos Ricaldoni](https://github.com/lemosslucas)** - Lead Programmer, Principal Technician
-- **[Mateus de Carvalho Pedrosa](https://github.com/mateusdcp13)** - Lead Prototyper and Technician
-- **[Paulo Vasconcelos Rodrigues Mendes]()** - Lead Designer and Support Prototyper
+
+<div style="display: flex; justify-content: center; gap: 20px;">
+    <div style="border: 1px solid #ddd; border-radius: 8px; padding: 10px; max-width: 200px; text-align: center;">
+        <img src="https://github.com/lemosslucas.png" style="margin-bottom: 10px; max-width: 180px;"/>
+        <div>
+            <a href="https://github.com/lemosslucas" target="_blank" style="text-decoration: none; font-size: 16px; font-weight: bold;">Lucas Lemos Ricaldoni</a><br/>
+            <span style="font-size: 14px; color: #555;">Lead Programmer, Principal Technician</span>
+        </div>
+    </div>
+    <div style="border: 1px solid #ddd; border-radius: 8px; padding: 10px; max-width: 200px; text-align: center;">
+        <img src="https://github.com/mateusdcp13.png" style="margin-bottom: 10px; max-width: 180px;"/>
+        <div>
+            <a href="https://github.com/mateusdcp13" target="_blank" style="text-decoration: none; font-size: 16px; font-weight: bold;">Mateus de Carvalho Pedrosa</a><br/>
+            <span style="font-size: 14px; color: #555;">Lead Prototyper and Technician</span>
+        </div>
+    </div>
+    <div style="border: 1px solid #ddd; border-radius: 8px; padding: 10px; max-width: 200px; text-align: center;">
+        <img src="https://github.com/PauloMendesPVRM.png" style="margin-bottom: 10px; max-width: 180px;"/>
+        <div>
+            <a href="https://github.com/PauloMendesPVRM" target="_blank" style="text-decoration: none; font-size: 16px; font-weight: bold;">Paulo Vasconcelos Rodrigues Mendes</a><br/>
+            <span style="font-size: 14px; color: #555;">Lead Designer and Support Prototyper</span>
+        </div>
+    </div>
+</div>
 
 ## License
 This project is licensed under the MIT License. See the file [LICENSE](LICENSE) for details.

@@ -31,30 +31,27 @@ The competition challenge participants to prototype, build, program and test the
 - 1x Custom 3D Printed / PLA Chassis
 
 ## Developers
-
-<div style="display: flex; justify-content: center; gap: 20px;">
-    <div style="border: 1px solid #ddd; border-radius: 8px; padding: 10px; max-width: 200px; text-align: center;">
-        <img src="https://github.com/lemosslucas.png" style="margin-bottom: 10px; max-width: 180px;"/>
-        <div>
-            <a href="https://github.com/lemosslucas" target="_blank" style="text-decoration: none; font-size: 16px; font-weight: bold;">Lucas Lemos Ricaldoni</a><br/>
-            <span style="font-size: 14px; color: #555;">Lead Programmer, Principal Technician</span>
-        </div>
-    </div>
-    <div style="border: 1px solid #ddd; border-radius: 8px; padding: 10px; max-width: 200px; text-align: center;">
-        <img src="https://github.com/mateusdcp13.png" style="margin-bottom: 10px; max-width: 180px;"/>
-        <div>
-            <a href="https://github.com/mateusdcp13" target="_blank" style="text-decoration: none; font-size: 16px; font-weight: bold;">Mateus de Carvalho Pedrosa</a><br/>
-            <span style="font-size: 14px; color: #555;">Lead Prototyper and Technician</span>
-        </div>
-    </div>
-    <div style="border: 1px solid #ddd; border-radius: 8px; padding: 10px; max-width: 200px; text-align: center;">
-        <img src="https://github.com/PauloMendesPVRM.png" style="margin-bottom: 10px; max-width: 180px;"/>
-        <div>
-            <a href="https://github.com/PauloMendesPVRM" target="_blank" style="text-decoration: none; font-size: 16px; font-weight: bold;">Paulo Vasconcelos Rodrigues Mendes</a><br/>
-            <span style="font-size: 14px; color: #555;">Lead Designer and Support Prototyper</span>
-        </div>
-    </div>
-</div>
+<table>
+  <tr>
+    <td align="center" style="width: 200px;">
+      <img src="https://github.com/lemosslucas.png" width="180" style="border-radius: 50%;"><br/>
+      <a href="https://github.com/lemosslucas"><strong>Lucas Lemos Ricaldoni</strong></a><br/>
+      <span>Lead Programmer, Principal Technician</span>
+    </td>
+    <td style="width: 20px;"></td> <!-- Espaço sem borda -->
+    <td align="center" style="width: 200px;">
+      <img src="https://github.com/mateusdcp13.png" width="180" style="border-radius: 50%;"><br/>
+      <a href="https://github.com/mateusdcp13"><strong>Mateus de Carvalho Pedrosa</strong></a><br/>
+      <span>Lead Prototyper and Technician</span>
+    </td>
+    <td style="width: 20px;"></td> <!-- Espaço sem borda -->
+    <td align="center" style="width: 200px;">
+      <img src="https://github.com/PauloMendesPVRM.png" width="180" style="border-radius: 50%;"><br/>
+      <a href="https://github.com/PauloMendesPVRM"><strong>Paulo Vasconcelos Rodrigues Mendes</strong></a><br/>
+      <span>Lead Designer and Support Prototyper</span>
+    </td>
+  </tr>
+</table>
 
 ## License
 This project is licensed under the MIT License. See the file [LICENSE](LICENSE) for details.

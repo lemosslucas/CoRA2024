@@ -6,10 +6,12 @@ This is a repository containing all the files utilised on the development and te
 The competition challenge participants to prototype, build, program and test the robot from scratch, with the help of tools such as Arduino (and languages alike), and CAD and Simulation softwares.
 
 ## File Structure
-- `data`: All the relevant data acquired during testing and programs to do so
+- `data/`: All the relevant data acquired during testing and programs to do so
 - `CoRA2024.ino`: Main file in Arduino to compile/run the code and test the robot
-- `motores.cpp` and `motores.h`: Specific scripts to implement the motorised functions of the robot
-- `desafios.cpp` and `desafios.h`: Specific scripts to tackle the track's challenges with the robot
+- `motores.cpp`: Specific scripts to implement the motorised functions of the robot
+- `motores.h`: Specific scripts to implement the motorised functions of the robot
+- `desafios.cpp`: Specific scripts to tackle the track's challenges with the robot 
+- `desafios.h`: Specific scripts to tackle the track's challenges with the robot
 
 ## Technologies used
 ### Programming Languages
@@ -31,23 +33,22 @@ The competition challenge participants to prototype, build, program and test the
 - 1x Custom 3D Printed / PLA Chassis
 
 ## Developers
+
 <table>
   <tr>
-    <td align="center" style="width: 200px;">
+    <td align="center" style="max-width: 200px;">
       <img src="https://github.com/lemosslucas.png" width="180" style="border-radius: 50%;"><br/>
       <a href="https://github.com/lemosslucas"><strong>Lucas Lemos Ricaldoni</strong></a><br/>
       <span>Lead Programmer, Principal Technician</span>
     </td>
-    <td style="width: 20px;"></td> <!-- Espaço sem borda -->
-    <td align="center" style="width: 200px;">
+    <td align="center" style="max-width: 200px;">
       <img src="https://github.com/mateusdcp13.png" width="180" style="border-radius: 50%;"><br/>
       <a href="https://github.com/mateusdcp13"><strong>Mateus de Carvalho Pedrosa</strong></a><br/>
       <span>Lead Prototyper and Technician</span>
     </td>
-    <td style="width: 20px;"></td> <!-- Espaço sem borda -->
-    <td align="center" style="width: 200px;">
+    <td align="center" style="max-width: 200px;">
       <img src="https://github.com/PauloMendesPVRM.png" width="180" style="border-radius: 50%;"><br/>
-      <a href="https://github.com/PauloMendesPVRM"><strong>Paulo Vasconcelos Rodrigues Mendes</strong></a><br/>
+      <a href="https://github.com/PauloMendesPVRM"><strong>Paulo Vasconcelos Mendes</strong></a><br/>
       <span>Lead Designer and Support Prototyper</span>
     </td>
   </tr>

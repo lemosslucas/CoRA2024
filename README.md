@@ -8,10 +8,10 @@ The competition challenge participants to prototype, build, program and test the
 ## File Structure
 - `data/`: All the relevant data acquired during testing and programs to do so
 - `CoRA2024.ino`: Main file in Arduino to compile/run the code and test the robot
-- `motores.cpp`: Specific scripts to implement the motorised functions of the robot
-- `motores.h`: Specific scripts to implement the motorised functions of the robot
+- `motores.cpp`: Specific script to implement the motorised functions of the robot
+- `motores.h`: Library referring to `motores.cpp` and its functions
 - `desafios.cpp`: Specific scripts to tackle the track's challenges with the robot 
-- `desafios.h`: Specific scripts to tackle the track's challenges with the robot
+- `desafios.h`: Library referring to `desafios.cpp` and its functions
 
 ## Technologies used
 ### Programming Languages

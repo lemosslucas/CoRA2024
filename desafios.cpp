@@ -26,20 +26,6 @@ int calcula_sensores_ativos(int SENSOR[]) {
   return sensoresAtivos;
 }
 
-int calcula_erro_sensores(int SENSOR[]) {
-  int pesos[5] = {-2, -1, 0, 1, 2};
-  int somatorioErro = 0;
-  int sensoresAtivos = 0;
-
-  for (int i = 0; i < 5; i++) {
-    somatorioErro += SENSOR[i] * pesos[i];
-    sensoresAtivos += SENSOR[i];
-  }
-
-  int sensoresInativos = QUANTIDADE_TOTAL_SENSORES - sensoresAtivos;
-  return somatorioErro / sensoresInativos;
-}
-
 int verifica_curva_90(int SENSOR[], int SENSOR_CURVA[]) {
   if (SENSOR_CURVA[0] == BRANCO && SENSOR[0] == BRANCO && SENSOR[1] == PRETO && SENSOR[2] == BRANCO && SENSOR[3] == PRETO && SENSOR[4] == PRETO && SENSOR_CURVA[1] == PRETO
   || calcula_sensores_ativos(SENSOR) == 3 && SENSOR_CURVA[0] == BRANCO && SENSOR_CURVA[1] == PRETO) {
@@ -62,17 +48,29 @@ void realiza_curva_90(int curvaEncontrada) {
   } else if (curvaEncontrada == CURVA_DIREITA) {
     curva_direita(velocidadeBaseDireita, velocidadeBaseEsquerda);
   } else if (curvaEncontrada == CURVA_EM_DUVIDA) {
+    // lado determinado no dia da prova
     //curva_esquerda(velocidadeBaseDireita, velocidadeBaseEsquerda);
     curva_direita(velocidadeBaseDireita, velocidadeBaseEsquerda);
   }
 }
 
+/**
+ * @brief Inverte o valor obtido pelos sensores
+ * 
+ * @param int sensor - saida dos sensores
+ * 
+ * Responsavel por garantir que o carro siga a linha quando houver
+ * a inversao de cores preto/branco -> branco/preto aplicando a 
+ * logica de uma porta logica NOT.
+ */
 int inverte_sensor(int sensor){
   if (sensor == 1){ 
     return 0;
   } 
   return 1;
 }
+
+inverte_sensor()
 
 bool verifica_inversao(int SENSOR[], int SENSOR_CURVA[]) {
   if (calcula_sensores_ativos(SENSOR) == 1 && SENSOR_CURVA[0] == BRANCO && SENSOR_CURVA[1] == BRANCO) {
@@ -81,19 +79,19 @@ bool verifica_inversao(int SENSOR[], int SENSOR_CURVA[]) {
     }
     return true;
   }
-  /* isso ta funcionando, estou vendo se esta sendo aprimorado
+  
   if (calcula_sensores_ativos(SENSOR) == 1) {
     for (int i = 0; i < 5; i++) {
       SENSOR[i] = inverte_sensor(SENSOR[i]);
     }
     return true;
   }
-  */
+  
   return false;
 }
 
 void realiza_faixa_de_pedestre() {
-  delay(6000);// tempo perfeito
+  delay(6000);
   andar(255, 255);
   delay(2000); 
 }

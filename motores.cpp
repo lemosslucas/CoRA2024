@@ -9,12 +9,6 @@ const int MOTOR_DIREITO_ANTI = 8;
 const int MOTOR_PWM_ESQUERDO = 5;
 const int MOTOR_PWM_DIREITO = 6;
 
-/**
- * @brief Configura os pinos necessarios para o controle dos motores.
- * 
- * Inicializa os pinos digitais associados ao controle de direcao e os pinos
- * PWM usados para controle de velocidade dos motores esquerdo e direito.
- */
 void setup_motor() {
   pinMode(MOTOR_ESQUERDO_HORARIO, OUTPUT);
   pinMode(MOTOR_ESQUERDO_ANTI, OUTPUT);

@@ -37,17 +37,26 @@ The competition challenge participants to prototype, build, program and test the
 <table>
   <tr>
     <td align="center" style="max-width: 200px;">
-      <img src="https://github.com/lemosslucas.png" width="180" style="border-radius: 50%;"><br/>
+      <a href="https://github.com/lemosslucas" target="_blank">
+        <img src="https://github.com/lemosslucas.png" width="180" />
+      </a>
+      <br/>
       <a href="https://github.com/lemosslucas"><strong>Lucas Lemos Ricaldoni</strong></a><br/>
       <span>Lead Programmer, Principal Technician</span>
     </td>
     <td align="center" style="max-width: 200px;">
-      <img src="https://github.com/mateusdcp13.png" width="180" style="border-radius: 50%;"><br/>
+      <a href="https://github.com/mateusdcp13"> 
+        <img src="https://github.com/mateusdcp13.png" width="180">
+      </a>
+      <br/>
       <a href="https://github.com/mateusdcp13"><strong>Mateus de Carvalho Pedrosa</strong></a><br/>
       <span>Lead Prototyper and Technician</span>
     </td>
     <td align="center" style="max-width: 200px;">
-      <img src="https://github.com/PauloMendesPVRM.png" width="180" style="border-radius: 50%;"><br/>
+      <a href="https://github.com/PauloMendesPVRM"> 
+        <img src="https://github.com/PauloMendesPVRM.png" width="180">
+      </a>
+      <br/>
       <a href="https://github.com/PauloMendesPVRM"><strong>Paulo Vasconcelos Mendes</strong></a><br/>
       <span>Lead Designer and Support Prototyper</span>
     </td>

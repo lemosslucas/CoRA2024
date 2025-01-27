@@ -32,6 +32,11 @@ The competition challenge participants to prototype, build, program and test the
 - 1x Custom Acrylic Base
 - 1x Custom 3D Printed / PLA Chassis
 
+## Media and Miscellaneous
+
+[![Participação na Competição de Robôs Autônomos da UFMG (CoRA) -2024](https://img.youtube.com/vi/5h6ZvlgcDps/0.jpg)](https://www.youtube.com/watch?v=5h6ZvlgcDps)  
+This video showcases our participation in the Autonomous Robot Competition at UFMG (CoRA) 2024, and our performance in the Final round.
+
 ## Developers
 
 <table>
@@ -62,6 +67,8 @@ The competition challenge participants to prototype, build, program and test the
     </td>
   </tr>
 </table>
+
+### Name of the team: "Pregadores"
 
 ## License
 This project is licensed under the MIT License. See the file [LICENSE](LICENSE) for details.

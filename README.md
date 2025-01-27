@@ -22,6 +22,11 @@ The competition challenge participants to prototype, build, program and test the
 - [MATLAB](https://www.mathworks.com/products/matlab.html): Data Plotting and Analysis
 
 ### Hardware
+<a href="miscellaneous/CoRA2024_ElectronicCircuit.png">
+  <img src="miscellaneous/CoRA2024_ElectronicCircuit.png" alt="Electronic Circuit" width="500">
+</a>
+<p><b>This is a schematic of the electronic circuitry used.</b></p>
+
 - [2x Yellow DC Motors](https://i0.wp.com/myduino.com/wp-content/uploads/2023/09/2-40.jpg?w=600&ssl=1) - **Specs:** 3V-12VDC; 1:48 gear ratio; 800g/cm max. @ 3VDC; 70mA (250mA max. @ 3VDC)
 - [2x Yellow DC Motor Wheels](https://kitsguru.com/cdn/shop/products/tracked-wheel-for-bo-motor-yellow-26mm-width_2048x.jpg?v=1642829900)
 - [1x Swivel Caster Wheel](https://www.institutodigital.com.br/wp-content/uploads/2020/10/rodizio-giratorio-25mm-2.png)
@@ -33,17 +38,12 @@ The competition challenge participants to prototype, build, program and test the
 - 1x Custom Acrylic Base
 - 1x Custom 3D Printed / PLA Chassis
 
-## Media and Miscellaneous
 
+## Media and Miscellaneous
 <a href="https://www.youtube.com/watch?v=5h6ZvlgcDps">
   <img src="https://img.youtube.com/vi/5h6ZvlgcDps/0.jpg" alt="Participation in the Autonomous Robot Competition at UFMG (CoRA) 2024" width="500">
 </a>
 <p>This video showcases our participation in the Autonomous Robot Competition at UFMG (CoRA) 2024, and our performance in the Final round.</p>
-
-<a href="miscellaneous/CoRA2024_ElectronicCircuit.png">
-  <img src="miscellaneous/CoRA2024_ElectronicCircuit.png" alt="Electronic Circuit" width="500">
-</a>
-<p>This is a schematic of the electronic circuitry used.</p>
 
 <a href="miscellaneous/CoRA2024_LaserCutChassis.png">
   <img src="miscellaneous/CoRA2024_LaserCutChassis.png" alt="Laser Cut Chassis" width="500">

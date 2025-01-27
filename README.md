@@ -35,17 +35,25 @@ The competition challenge participants to prototype, build, program and test the
 
 ## Media and Miscellaneous
 
-[![Participação na Competição de Robôs Autônomos da UFMG (CoRA) -2024](https://img.youtube.com/vi/5h6ZvlgcDps/0.jpg)](https://www.youtube.com/watch?v=5h6ZvlgcDps)  
-This video showcases our participation in the Autonomous Robot Competition at UFMG (CoRA) 2024, and our performance in the Final round.
+<a href="https://www.youtube.com/watch?v=5h6ZvlgcDps">
+  <img src="https://img.youtube.com/vi/5h6ZvlgcDps/0.jpg" alt="Participation in the Autonomous Robot Competition at UFMG (CoRA) 2024" width="500">
+</a>
+<p>This video showcases our participation in the Autonomous Robot Competition at UFMG (CoRA) 2024, and our performance in the Final round.</p>
 
-![Electronic Circuit](CoRA2024_ElectronicCircuit.png)
-This is a schematic of the electronic circuitry used.
+<a href="miscellaneous/CoRA2024_ElectronicCircuit.png">
+  <img src="miscellaneous/CoRA2024_ElectronicCircuit.png" alt="Electronic Circuit" width="500">
+</a>
+<p>This is a schematic of the electronic circuitry used.</p>
 
-![Laser Cut Chassis](CoRA2024_LaserCutChassis.png)
-This is the vector of the chassis used to assemble the parts on, and thus the whole robot.
+<a href="miscellaneous/CoRA2024_LaserCutChassis.png">
+  <img src="miscellaneous/CoRA2024_LaserCutChassis.png" alt="Laser Cut Chassis" width="500">
+</a>
+<p>This is the vector of the chassis used to assemble the parts on, and thus the whole robot.</p>
 
-![Shark Frame 3D Printing](CoRA2024_SharkFrame3DPrinting.png)
-This is the representation of our decorative frame for the robot.
+<a href="miscellaneous/CoRA2024_SharkFrame3DPrinting.png">
+  <img src="miscellaneous/CoRA2024_SharkFrame3DPrinting.png" alt="Shark Frame 3D Printing" width="500">
+</a>
+<p>This is the representation of our decorative frame for the robot.</p>
 
 ## Developers
 

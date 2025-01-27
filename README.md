@@ -7,6 +7,7 @@ The competition challenge participants to prototype, build, program and test the
 
 ## File Structure
 - `data/`: All the relevant data acquired during testing and programs to do so
+- `miscellaneous`: All the files regarding the building of the robot and circuitry
 - `CoRA2024.ino`: Main file in Arduino to compile/run the code and test the robot
 - `motores.cpp`: Specific script to implement the motorised functions of the robot
 - `motores.h`: Library referring to `motores.cpp` and its functions
@@ -36,6 +37,15 @@ The competition challenge participants to prototype, build, program and test the
 
 [![Participação na Competição de Robôs Autônomos da UFMG (CoRA) -2024](https://img.youtube.com/vi/5h6ZvlgcDps/0.jpg)](https://www.youtube.com/watch?v=5h6ZvlgcDps)  
 This video showcases our participation in the Autonomous Robot Competition at UFMG (CoRA) 2024, and our performance in the Final round.
+
+![Electronic Circuit](CoRA2024_ElectronicCircuit.png)
+This is a schematic of the electronic circuitry used.
+
+![Laser Cut Chassis](CoRA2024_LaserCutChassis.png)
+This is the vector of the chassis used to assemble the parts on, and thus the whole robot.
+
+![Shark Frame 3D Printing](CoRA2024_SharkFrame3DPrinting.png)
+This is the representation of our decorative frame for the robot.
 
 ## Developers
 

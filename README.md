@@ -35,9 +35,6 @@ The competition challenge participants to prototype, build, program and test the
 - [1x Breadboard and Jumper Cables](https://images.squarespace-cdn.com/content/v1/556646a4e4b0bda793faf918/1595041751201-D74U6ZYRW93A6ZW6YYMK/BRBRD830J+Breadboard+MB102+w.+65+Jumper+cables.jpg)
 - [1x L293D CI Motor Driver](https://www.ti.com/lit/ds/symlink/l293.pdf?HQS=dis-mous-null-mousermode-dsf-pf-null-wwe&ts=1723753701665)
 - [7x TCRT5000 Infrared Sensors](https://www.haoyuelectronics.com/Attachment/TCRT5000/tcrt5000.pdf)
-- 1x Custom Acrylic Base
-- 1x Custom 3D Printed / PLA Chassis
-
 
 ## Media and Miscellaneous
 <a href="https://www.youtube.com/watch?v=5h6ZvlgcDps">
